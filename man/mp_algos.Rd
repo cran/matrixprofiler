@@ -12,6 +12,7 @@ stamp(
   window_size,
   query = NULL,
   exclusion_zone = 0.5,
+  s_size = 1,
   n_workers = 1,
   progress = TRUE
 )
@@ -25,13 +26,23 @@ stomp(
   progress = TRUE
 )
 
-scrimp(data, window_size, exclusion_zone = 0.5, n_workers = 1, progress = TRUE)
+scrimp(
+  data,
+  window_size,
+  query = NULL,
+  exclusion_zone = 0.5,
+  s_size = 1,
+  pre_scrimp = 0.25,
+  n_workers = 1,
+  progress = TRUE
+)
 
 mpx(
   data,
   window_size,
   query = NULL,
   exclusion_zone = 0.5,
+  s_size = 1,
   idxs = TRUE,
   distance = c("euclidean", "pearson"),
   n_workers = 1,
@@ -49,10 +60,16 @@ Default is \code{NULL} (See details).}
 \item{exclusion_zone}{A numeric. Defines the size of the area around the rolling window that will be ignored to avoid
 trivial matches. Default is \code{0.5}, i.e., half of the \code{window_size}.}
 
+\item{s_size}{A numeric. Used on anytime algorithms (stamp, scrimp, mpx) if only part of the computation is needed.
+Default is \code{1.0} (means 100\%).}
+
 \item{n_workers}{An integer. The number of threads using for computing. Defaults to \code{1}.}
 
 \item{progress}{A logical. If \code{TRUE} (the default) will show a progress bar. Useful for long computations. (See
 details)}
+
+\item{pre_scrimp}{A numeric. If not zero, pre_scrimp is computed, using a fraction of the data. Default is \code{0.25}.
+This parameter is ignored when using multithread or AB-join.}
 
 \item{idxs}{(\code{mpx()} only) A logical. Specifies if the computation will return the Profile Index or not. Defaults to
 \code{TRUE}.}
@@ -60,8 +77,8 @@ details)}
 \item{distance}{(\code{mpx()} only) A string. Currently accepts \code{euclidean} and \code{pearson}. Defaults to \code{euclidean}.}
 }
 \value{
-Returns a \code{list} with the \code{matrix_profile}, \code{profile_index} (if \code{idxs} is \code{TRUE} in \code{mpx()}), and some information
-about the settings used to build it, like \code{ez} and \code{partial} when the algorithm is finished early.
+Returns a \code{list} with the \code{matrix_profile}, \code{profile_index} (if \code{idxs} is \code{TRUE} in \code{mpx()}), and some
+information about the settings used to build it, like \code{ez} and \code{partial} when the algorithm is finished early.
 }
 \description{
 STAMP Computes the best so far Matrix Profile and Profile Index for Univariate Time Series.
@@ -119,7 +136,7 @@ on Ogita's work for better precision computing mean and standard deviation (part
 }
 }
 \section{This document}{
-Last updated on 2021-02-14 using R version 4.0.3.
+Last updated on 2021-02-28 using R version 4.0.3.
 }
 
 \examples{
