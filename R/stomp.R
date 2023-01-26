@@ -2,6 +2,8 @@
 #'
 #' STOMP is a faster implementation with the caveat that is not anytime as STAMP or SCRIMP.
 #'
+#' @param left_right_profile (`stomp()` only) A boolean. If `TRUE`, the function will return the left and right profiles.
+#'
 #' @details ## stomp
 #'  The STOMP uses a faster implementation to compute the Matrix Profile and Profile Index. It can be stopped earlier by
 #'  the user, but the result is not considered anytime, just incomplete. For a anytime algorithm, use `stamp()` or
@@ -14,8 +16,7 @@
 #' @order 2
 #' @examples
 #' mp <- stomp(motifs_discords_small, 50)
-stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_workers = 1, progress = TRUE) {
-
+stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_workers = 1, progress = TRUE, left_right_profile = FALSE) {
   # Parse arguments ---------------------------------
   "!!!DEBUG Parsing Arguments"
 
@@ -29,6 +30,7 @@ stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_worke
   checkmate::qassert(exclusion_zone, "N+")
   n_workers <- as.integer(checkmate::qassert(n_workers, "X+"))
   checkmate::qassert(progress, "B+")
+  checkmate::qassert(left_right_profile, "B1")
 
   ez <- exclusion_zone
   result <- NULL
@@ -59,6 +61,7 @@ stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_worke
   "!DEBUG Computation"
   if (is.null(query)) {
     ## Self-Join ====================================
+    # Can return LMP or RMP
     "!DEBUG Self-Join"
     tryCatch(
       {
@@ -72,7 +75,8 @@ stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_worke
             data,
             window_size,
             ez,
-            as.logical(progress)
+            as.logical(progress),
+            as.logical(left_right_profile)
           )
           RcppParallel::setThreadOptions(numThreads = p)
         } else {
@@ -81,7 +85,8 @@ stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_worke
             data,
             window_size,
             ez,
-            as.logical(progress)
+            as.logical(progress),
+            as.logical(left_right_profile)
           )
         }
       },
@@ -90,6 +95,12 @@ stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_worke
     "!DEBUG End Self-Join"
   } else {
     ## AB-Join ====================================
+    # Can't return LMP or RMP
+
+    if (isTRUE(left_right_profile)) {
+      warning("AB-Join can't return Left of Right Profiles, and this argument will be ignored.")
+    }
+
     "!DEBUG AB-Join"
     ez <- 0
 
@@ -114,7 +125,8 @@ stomp <- function(data, window_size, query = NULL, exclusion_zone = 0.5, n_worke
             query,
             window_size,
             ez,
-            as.logical(progress)
+            as.logical(progress),
+            as.logical(FALSE)
           )
         }
       },

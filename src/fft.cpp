@@ -1,3 +1,7 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+
 /*
     R : A Computer Language for Statistical Data Analysis
     Copyright (C) 1998--2019  The R Core Team
@@ -33,6 +37,8 @@
 
 */
 
+// NOLINTBEGIN(*)
+
 #include "fft.h"
 #include <iostream>
 
@@ -41,6 +47,7 @@
 using namespace Rcpp;
 
 namespace FFT {
+
 /*  Fast Fourier Transform
 
   These routines are based on code by Richard Singleton in the
@@ -136,7 +143,7 @@ namespace FFT {
   factor any positive int n, up to 2^31 - 1.
 */
 
-fftw::fftw() {}
+fftw::fftw() = default;
 
 // Destructor
 fftw::~fftw() {
@@ -153,7 +160,7 @@ fftw::~fftw() {
 
 std::vector<std::complex<double>> fftw::fft(std::vector<double> z, bool inverse) {
 
-  int n = z.size();
+  int const n = z.size();
 
   std::vector<std::complex<double>> res(n);
 
@@ -172,7 +179,7 @@ std::vector<std::complex<double>> fftw::fft(std::vector<std::complex<double>> z,
   int i, inv, maxf, maxp, n;
   double f;
   size_t smaxf;
-  size_t maxsize = ((size_t)-1) / 4;
+  size_t const maxsize = ((size_t)-1) / 4;
 
   n = z.size();
 
@@ -200,15 +207,20 @@ std::vector<std::complex<double>> fftw::fft(std::vector<std::complex<double>> z,
     iwork = (int *)std::calloc(maxp, sizeof(int));
     cplx = (complex_t *)std::calloc(n, sizeof(complex_t));
 
-    for (i = 0; i < n; i++) {
-      cplx[i].r = z[i].real();
-      cplx[i].i = z[i].imag();
-    }
+    if (cplx == nullptr) {
+      Rcout << "fail to alloc cplx vector" << std::endl;
+    } else {
 
-    fft_work(&cplx[0].r, &cplx[0].i, 1, n, 1, inv, work, iwork);
+      for (i = 0; i < n; i++) {
+        cplx[i].r = z[i].real();
+        cplx[i].i = z[i].imag();
+      }
 
-    for (i = 0; i < n; i++) {
-      res[i] = std::complex<double>(cplx[i].r, cplx[i].i) / f;
+      fft_work(&cplx[0].r, &cplx[0].i, 1, n, 1, inv, work, iwork);
+
+      for (i = 0; i < n; i++) {
+        res[i] = std::complex<double>(cplx[i].r, cplx[i].i) / f;
+      }
     }
 
     if (work != nullptr) {
@@ -368,8 +380,8 @@ int fftw::fft_work(double *a, double *b, int nseg, int n, int nspn, int isn, dou
 
   /* perform the transform */
 
-  size_t mf = maxf;
-  int nspan = n * nspn, ntot = nspan * nseg;
+  size_t const mf = maxf;
+  int const nspan = n * nspn, ntot = nspan * nseg;
 
   fftmx(a, b, ntot, n, nspan, isn, m_fac, kt, work, work + mf, work + 2 * mf, work + 3 * mf, iwork, nfac);
 
@@ -1100,4 +1112,7 @@ L570:
     goto L_ord;
   }
 } /* fftmx */
+
 } // namespace FFT
+
+// NOLINTEND(*)

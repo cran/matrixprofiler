@@ -1,9 +1,12 @@
+Abdoli
 Actionability
+Alaee
 CCM
 CMD
 CUDA
 CodeQL
 Conf
+Constrast
 FLUSS
 Funning
 GPUs
@@ -48,6 +51,8 @@ WQ
 ZiyaoWei
 al
 codecov
+cran
+doi
 eamonn
 eddelbuettel
 edu
@@ -63,7 +68,6 @@ kotlin
 lifecycle
 mSTOMP
 macOS
-mai
 matlab
 matrixprofile
 mov
@@ -72,14 +76,15 @@ multithread
 multithreading
 mutexes
 neglectable
-nov
 ogita
 owlpy
 por
 pre
 precomputations
+precomputed
 procesment
 pyMatrixProfile
+rcpp
 scalability
 shapelet
 shapelets

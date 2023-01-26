@@ -2,7 +2,7 @@ README
 ================
 Francisco Bischoff
 
-26 mai 2021
+25 Jan 2023
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -15,7 +15,7 @@ Francisco Bischoff
 [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-[![Lint](https://github.com/matrix-profile-foundation/matrixprofiler/workflows/Lint/badge.svg?branch=main)](https://github.com/jimhester/lintr)
+[![Lint](https://github.com/matrix-profile-foundation/matrixprofiler/workflows/Lint/badge.svg?branch=main)](https://github.com/r-lib/lintr)
 [![R-CMD-check](https://github.com/matrix-profile-foundation/matrixprofiler/workflows/R-CMD-check/badge.svg?branch=main)](https://r-pkgs.org/r-cmd-check.html)
 
 [![codecov](https://codecov.io/gh/matrix-profile-foundation/matrixprofiler/branch/main/graph/badge.svg?token=w7AmbwhNvn)](https://app.codecov.io/gh/matrix-profile-foundation/matrixprofiler)
@@ -79,7 +79,7 @@ devtools::install_github("matrix-profile-foundation/matrixprofiler")
     -   MASS extensions: UN (Unnormalized Query)
     -   MASS extensions: WQ (Weighted Query)
     -   MASS extensions: ABS (Absolute Query and Data)
-    -   Window functions like mov\_mean() and others.
+    -   Window functions like mov_mean() and others.
 
 ### On Roadmap
 

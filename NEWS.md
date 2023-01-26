@@ -1,3 +1,9 @@
+NEWS
+================
+Francisco Bischoff
+
+25 Jan 2023
+
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 ## matrixprofiler 0.1.9
@@ -6,7 +12,7 @@
 
 ## matrixprofiler 0.1.8
 
--   Fixed memory leak on mpx\_rcpp\_parallel().
+-   Fixed memory leak on mpx_rcpp_parallel().
 -   Added contrast profile function: contrast().
 -   Several code lint.
 
